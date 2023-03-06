@@ -14,13 +14,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color primaryColor = Colors.pink.shade400;
     return MaterialApp(
       title: "Profile Projects",
       home: const MyHomePage(),
       // To share a Theme across the entire app
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        primaryColor: Colors.pink.shade400,
+        primaryColor: primaryColor,
         dividerTheme: const DividerThemeData(
           color: Colors.white10,
           indent: 32,
@@ -29,6 +30,17 @@ class MainApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
         appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          filled: true,
+          fillColor: Colors.white10,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(primaryColor))),
         textTheme: GoogleFonts.latoTextTheme(const TextTheme(
           titleLarge: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
           titleMedium: TextStyle(
@@ -72,111 +84,160 @@ class _MyHomePageState extends State<MyHomePage> {
           Icon(CupertinoIcons.ellipsis_vertical),
         ],
       ),
-      body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Padding(
-          padding: const EdgeInsets.all(32),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  "assets/images/profile_image.png",
-                  width: 60,
-                  height: 60,
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: const EdgeInsets.all(32),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    "assets/images/profile_image.png",
+                    width: 60,
+                    height: 60,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Brice Séraphin",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(
-                      width: 2,
-                    ),
-                    const Text("Product& Product Designer"),
-                    const SizedBox(
-                      height: 4,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          CupertinoIcons.location,
-                          color: Theme.of(context).textTheme.titleMedium!.color,
-                          size: 18,
-                        ),
-                        SizedBox(
-                          width: 3,
-                        ),
-                        Text(
-                          "Paris, France",
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ],
-                    )
-                  ],
+                const SizedBox(
+                  width: 16,
                 ),
-              ),
-              Icon(
-                CupertinoIcons.heart,
-                color: Theme.of(context).primaryColor,
-              ),
-            ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Brice Séraphin",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      const SizedBox(
+                        width: 2,
+                      ),
+                      const Text("Product& Product Designer"),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.location,
+                            color:
+                                Theme.of(context).textTheme.titleMedium!.color,
+                            size: 18,
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                            "Paris, France",
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                Icon(
+                  CupertinoIcons.heart,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: EdgeInsets.fromLTRB(32, 0, 32, 16),
-          child: Text(
-            "Enthusiastic young computer Geek, Freelance Designer in love of independence, I have alot of experience in graphical projects, and always give the best of myself to bring you to success.",
-            style: Theme.of(context).textTheme.bodyMedium,
+          Padding(
+            padding: const EdgeInsets.fromLTRB(32, 0, 32, 16),
+            child: Text(
+              "Enthusiastic young computer Geek, Freelance Designer in love of independence, I have alot of experience in graphical projects, and always give the best of myself to bring you to success.",
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
-        ),
-        Divider(),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(32, 16, 32, 20),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Skills",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(fontWeight: FontWeight.w900),
-              ),
-              SizedBox(
-                width: 2,
-              ),
-              Icon(
-                CupertinoIcons.chevron_down,
-                size: 12,
-              ),
-            ],
+          Divider(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(32, 16, 32, 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "Skills",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(fontWeight: FontWeight.w900),
+                ),
+                const SizedBox(
+                  width: 2,
+                ),
+                const Icon(
+                  CupertinoIcons.chevron_down,
+                  size: 12,
+                ),
+              ],
+            ),
           ),
-        ),
-        Center(
-          child: Wrap(
-            direction: Axis.horizontal,
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              SkillItem(
-                skill: Skill.photoshop,
-                title: "Photoshop",
-                imagePath: "assets/images/app_icon_01.png",
-                shadowColor: Colors.blue,
-                isActive: selectedSkill == Skill.photoshop,
-                onTap: () => updateSelectedSkill(Skill.photoshop),
-              )
-            ],
+          Center(
+            child: Wrap(
+              direction: Axis.horizontal,
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                SkillItem(
+                  skill: Skill.photoshop,
+                  title: "Photoshop",
+                  imagePath: "assets/images/app_icon_01.png",
+                  shadowColor: Colors.blue,
+                  isActive: selectedSkill == Skill.photoshop,
+                  onTap: () => updateSelectedSkill(Skill.photoshop),
+                )
+              ],
+            ),
           ),
-        )
-      ]),
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(32, 12, 32, 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Personal Information",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(fontWeight: FontWeight.w900),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    prefixIcon: Icon(CupertinoIcons.at),
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    prefixIcon: Icon(CupertinoIcons.lock),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: const Text("Save"),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ]),
+      ),
     );
   }
 }
