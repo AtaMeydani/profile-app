@@ -9,54 +9,113 @@ void main() {
   runApp(const MainApp());
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
 
   @override
+  State<MainApp> createState() => _MainAppState();
+}
+
+class _MainAppState extends State<MainApp> {
+  ThemeMode themeMode = ThemeMode.dark;
+
+  @override
   Widget build(BuildContext context) {
-    Color primaryColor = Colors.pink.shade400;
     return MaterialApp(
       title: "Profile Projects",
-      home: const MyHomePage(),
-      // To share a Theme across the entire app
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        primaryColor: primaryColor,
-        dividerTheme: const DividerThemeData(
-          color: Colors.white10,
-          indent: 32,
-          thickness: 0.5,
-        ),
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color.fromARGB(255, 30, 30, 30),
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.black),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: Colors.white10,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(primaryColor))),
-        textTheme: GoogleFonts.latoTextTheme(const TextTheme(
-          titleLarge: TextStyle(fontWeight: FontWeight.w900, fontSize: 18),
-          titleMedium: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Color.fromARGB(200, 255, 255, 255)),
-          bodyLarge: TextStyle(fontSize: 15),
-          bodyMedium: TextStyle(fontSize: 13),
-        )),
+      home: MyHomePage(
+        toggleThemeMode: () {
+          setState(() {
+            if (themeMode == ThemeMode.dark) {
+              themeMode = ThemeMode.light;
+            } else {
+              themeMode = ThemeMode.dark;
+            }
+          });
+        },
       ),
+      theme: themeMode == ThemeMode.dark
+          ? MyAppThemeConfig.dark().getTheme()
+          : MyAppThemeConfig.light().getTheme(),
+    );
+  }
+}
+
+class MyAppThemeConfig {
+  final Color primaryColor = Colors.pink.shade400;
+  final Color primaryTextColor;
+  final Color secondaryTextColor;
+  final Color surfaceColor;
+  final Color backgroundColor;
+  final Color appBarColor;
+  final Brightness brightness;
+
+  MyAppThemeConfig.dark()
+      : primaryTextColor = Colors.white,
+        secondaryTextColor = Colors.white70,
+        surfaceColor = Color(0x0dffffff),
+        backgroundColor = Color.fromARGB(255, 30, 30, 30),
+        appBarColor = Colors.black,
+        brightness = Brightness.dark;
+
+  MyAppThemeConfig.light()
+      : primaryTextColor = Colors.grey.shade900,
+        secondaryTextColor = Colors.grey.shade900.withOpacity(.8),
+        surfaceColor = Color(0x0d000000),
+        backgroundColor = Colors.white,
+        appBarColor = Color.fromARGB(255, 235, 235, 235),
+        brightness = Brightness.light;
+
+  ThemeData getTheme() {
+    // To share a Theme across the entire app
+    return ThemeData(
+      primarySwatch: Colors.blue,
+      primaryColor: primaryColor,
+      dividerTheme: const DividerThemeData(
+        color: Colors.white10,
+        indent: 32,
+        thickness: 0.5,
+      ),
+      brightness: brightness,
+      scaffoldBackgroundColor: backgroundColor,
+      appBarTheme: AppBarTheme(
+        elevation: 0,
+        backgroundColor: appBarColor,
+        foregroundColor: primaryTextColor,
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: Colors.white10,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(primaryColor))),
+      textTheme: GoogleFonts.latoTextTheme(TextTheme(
+        titleLarge: TextStyle(
+          fontWeight: FontWeight.w900,
+          fontSize: 18,
+          color: primaryTextColor,
+        ),
+        titleMedium: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: primaryTextColor,
+        ),
+        bodyLarge: TextStyle(fontSize: 15, color: primaryTextColor),
+        bodyMedium: TextStyle(fontSize: 13, color: secondaryTextColor),
+      )),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  final Function() toggleThemeMode;
+
+  const MyHomePage({super.key, required this.toggleThemeMode});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -76,12 +135,15 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Curriculum Vitae"),
-        actions: const [
+        actions: [
           Icon(CupertinoIcons.chat_bubble),
           SizedBox(
             width: 8,
           ),
-          Icon(CupertinoIcons.ellipsis_vertical),
+          InkWell(
+            child: Icon(CupertinoIcons.ellipsis_vertical),
+            onTap: widget.toggleThemeMode,
+          ),
         ],
       ),
       body: SingleChildScrollView(
