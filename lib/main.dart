@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'components/skill_item.dart';
 import 'consts.dart';
@@ -17,26 +19,35 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  ThemeMode themeMode = ThemeMode.dark;
+  ThemeMode _themeMode = ThemeMode.dark;
+  Locale _locale = Locale('en');
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Profile Projects",
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: _locale,
       home: MyHomePage(
         toggleThemeMode: () {
           setState(() {
-            if (themeMode == ThemeMode.dark) {
-              themeMode = ThemeMode.light;
+            if (_themeMode == ThemeMode.dark) {
+              _themeMode = ThemeMode.light;
             } else {
-              themeMode = ThemeMode.dark;
+              _themeMode = ThemeMode.dark;
             }
           });
         },
       ),
-      theme: themeMode == ThemeMode.dark
-          ? MyAppThemeConfig.dark().getTheme()
-          : MyAppThemeConfig.light().getTheme(),
+      theme: _themeMode == ThemeMode.dark
+          ? MyAppThemeConfig.dark().getTheme(_locale.languageCode)
+          : MyAppThemeConfig.light().getTheme(_locale.languageCode),
     );
   }
 }
@@ -66,7 +77,7 @@ class MyAppThemeConfig {
         appBarColor = Color.fromARGB(255, 235, 235, 235),
         brightness = Brightness.light;
 
-  ThemeData getTheme() {
+  ThemeData getTheme(String languageCode) {
     // To share a Theme across the entire app
     return ThemeData(
       primarySwatch: Colors.blue,
@@ -94,7 +105,11 @@ class MyAppThemeConfig {
       elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(primaryColor))),
-      textTheme: GoogleFonts.latoTextTheme(TextTheme(
+      textTheme: languageCode == 'en' ? enPrimaryTextTheme : faPrimaryTextTheme,
+    );
+  }
+
+  TextTheme get enPrimaryTextTheme => GoogleFonts.latoTextTheme(TextTheme(
         titleLarge: TextStyle(
           fontWeight: FontWeight.w900,
           fontSize: 18,
@@ -105,11 +120,40 @@ class MyAppThemeConfig {
           fontSize: 16,
           color: primaryTextColor,
         ),
-        bodyLarge: TextStyle(fontSize: 15, color: primaryTextColor),
-        bodyMedium: TextStyle(fontSize: 13, color: secondaryTextColor),
-      )),
-    );
-  }
+        bodyLarge: TextStyle(
+          fontSize: 15,
+          color: primaryTextColor,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 13,
+          color: secondaryTextColor,
+        ),
+      ));
+
+  TextTheme get faPrimaryTextTheme => TextTheme(
+        titleLarge: TextStyle(
+          fontWeight: FontWeight.w900,
+          fontSize: 18,
+          color: primaryTextColor,
+          fontFamily: 'IranYekan',
+        ),
+        titleMedium: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+          color: primaryTextColor,
+          fontFamily: 'IranYekan',
+        ),
+        bodyLarge: TextStyle(
+          fontSize: 15,
+          color: primaryTextColor,
+          fontFamily: 'IranYekan',
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 13,
+          color: secondaryTextColor,
+          fontFamily: 'IranYekan',
+        ),
+      );
 }
 
 class MyHomePage extends StatefulWidget {
@@ -132,9 +176,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Curriculum Vitae"),
+        title: Text(localization.profileTitle),
         actions: [
           Icon(CupertinoIcons.chat_bubble),
           SizedBox(
@@ -169,13 +214,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Brice Séraphin",
+                        localization.name,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                       const SizedBox(
                         width: 2,
                       ),
-                      const Text("Product& Product Designer"),
+                      Text(localization.job),
                       const SizedBox(
                         height: 4,
                       ),
@@ -191,7 +236,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             width: 3,
                           ),
                           Text(
-                            "Paris, France",
+                            localization.localeName,
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ],
@@ -209,7 +254,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Padding(
             padding: const EdgeInsets.fromLTRB(32, 0, 32, 16),
             child: Text(
-              "Enthusiastic young computer Geek, Freelance Designer in love of independence, I have alot of experience in graphical projects, and always give the best of myself to bring you to success.",
+              localization.summary,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
@@ -260,7 +305,7 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Personal Information",
+                  localization.personalInformation,
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge!
@@ -269,18 +314,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(
                   height: 12,
                 ),
-                const TextField(
+                TextField(
                   decoration: InputDecoration(
-                    labelText: 'Email',
+                    labelText: localization.email,
                     prefixIcon: Icon(CupertinoIcons.at),
                   ),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
-                const TextField(
+                TextField(
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: localization.password,
                     prefixIcon: Icon(CupertinoIcons.lock),
                   ),
                 ),
@@ -292,7 +337,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 48,
                   child: ElevatedButton(
                     onPressed: () {},
-                    child: const Text("Save"),
+                    child: Text(localization.save),
                   ),
                 )
               ],
