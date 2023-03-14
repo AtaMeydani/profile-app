@@ -44,6 +44,12 @@ class _MainAppState extends State<MainApp> {
             }
           });
         },
+        toggleLanguage: (Language selectedLanguage) {
+          setState(() {
+            _locale =
+                selectedLanguage == Language.en ? Locale('en') : Locale('fa');
+          });
+        },
       ),
       theme: _themeMode == ThemeMode.dark
           ? MyAppThemeConfig.dark().getTheme(_locale.languageCode)
@@ -95,6 +101,7 @@ class MyAppThemeConfig {
         foregroundColor: primaryTextColor,
       ),
       inputDecorationTheme: InputDecorationTheme(
+        labelStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
@@ -150,7 +157,14 @@ class MyAppThemeConfig {
         ),
         bodyMedium: TextStyle(
           fontSize: 13,
+          height: 1.5,
           color: secondaryTextColor,
+          fontFamily: 'IranYekan',
+        ),
+        bodySmall: TextStyle(
+          fontFamily: 'IranYekan',
+        ),
+        labelLarge: TextStyle(
           fontFamily: 'IranYekan',
         ),
       );
@@ -158,8 +172,10 @@ class MyAppThemeConfig {
 
 class MyHomePage extends StatefulWidget {
   final Function() toggleThemeMode;
+  final Function(Language language) toggleLanguage;
 
-  const MyHomePage({super.key, required this.toggleThemeMode});
+  const MyHomePage(
+      {super.key, required this.toggleThemeMode, required this.toggleLanguage});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -167,10 +183,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Skill selectedSkill = Skill.photoshop;
+  Language selectedLanguage = Language.en;
 
   void updateSelectedSkill(Skill selectedSkill) {
     setState(() {
       this.selectedSkill = selectedSkill;
+    });
+  }
+
+  void updateSelectedLanguage(Language selectedLanguage) {
+    widget.toggleLanguage(selectedLanguage);
+    setState(() {
+      this.selectedLanguage = selectedLanguage;
     });
   }
 
@@ -260,12 +284,30 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Divider(),
           Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(localization.selectedLanguage),
+                CupertinoSlidingSegmentedControl<Language>(
+                    groupValue: selectedLanguage,
+                    thumbColor: Theme.of(context).colorScheme.primary,
+                    children: {
+                      Language.en: Text(localization.enLanguage),
+                      Language.fa: Text(localization.faLanguage),
+                    },
+                    onValueChanged: (value) => updateSelectedLanguage(value!))
+              ],
+            ),
+          ),
+          Divider(),
+          Padding(
             padding: const EdgeInsets.fromLTRB(32, 16, 32, 20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Skills",
+                  localization.skills,
                   style: Theme.of(context)
                       .textTheme
                       .bodyLarge!

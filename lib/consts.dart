@@ -5,3 +5,8 @@ enum Skill {
   afterEffect,
   lightRoom,
 }
+
+enum Language {
+  en,
+  fa,
+}
