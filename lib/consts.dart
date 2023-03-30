@@ -10,3 +10,5 @@ enum Language {
   en,
   fa,
 }
+
+const faFontFamily = 'IranYekan';

@@ -120,7 +120,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           const Divider(),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 32),
+            padding: const EdgeInsets.symmetric(horizontal: 32),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -164,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Wrap(
               direction: Axis.horizontal,
               spacing: 8,
-              runSpacing: 8,
+              runSpacing: 2,
               children: [
                 SkillItem(
                   skill: Skill.photoshop,

@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:profile_project/consts.dart';
 
 class MyAppThemeConfig {
-  final Color primaryColor = Colors.pink.shade400;
   final Color primaryTextColor;
   final Color secondaryTextColor;
   final Color surfaceColor;
@@ -41,8 +40,8 @@ class MyAppThemeConfig {
   ThemeData getTheme(Language language) {
     // To share a Theme across the entire app
     return ThemeData(
-      primarySwatch: Colors.blue,
-      primaryColor: primaryColor,
+      primarySwatch: Colors.pink,
+      primaryColor: Colors.pink.shade400,
       dividerTheme: const DividerThemeData(
         color: Colors.white10,
         indent: 32,
@@ -67,7 +66,7 @@ class MyAppThemeConfig {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(primaryColor),
+          backgroundColor: MaterialStatePropertyAll(Colors.pink.shade300),
         ),
       ),
       textTheme: getTextTheme(language),
@@ -102,30 +101,30 @@ class MyAppThemeConfig {
           fontWeight: FontWeight.w900,
           fontSize: 18,
           color: primaryTextColor,
-          fontFamily: 'IranYekan',
+          fontFamily: faFontFamily,
         ),
         titleMedium: TextStyle(
           fontWeight: FontWeight.bold,
           fontSize: 16,
           color: primaryTextColor,
-          fontFamily: 'IranYekan',
+          fontFamily: faFontFamily,
         ),
         bodyLarge: TextStyle(
           fontSize: 15,
           color: primaryTextColor,
-          fontFamily: 'IranYekan',
+          fontFamily: faFontFamily,
         ),
         bodyMedium: TextStyle(
           fontSize: 13,
           height: 1.5,
           color: secondaryTextColor,
-          fontFamily: 'IranYekan',
+          fontFamily: faFontFamily,
         ),
         bodySmall: const TextStyle(
-          fontFamily: 'IranYekan',
+          fontFamily: faFontFamily,
         ),
         labelLarge: const TextStyle(
-          fontFamily: 'IranYekan',
+          fontFamily: faFontFamily,
         ),
       );
 }
